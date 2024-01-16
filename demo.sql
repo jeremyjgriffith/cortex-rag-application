@@ -1,11 +1,13 @@
 use schema sec_cortex_demo.public;
 use warehouse xsmall;
 
+-- static data, LLAMA works fine. 
 select 
     snowflake.cortex.complete('llama2-70b-chat', 
                               'Where is Snowflake\'s headquarters?'
     );
 
+-- old data based on model training. Needs RAG for up-to-data information.
 select 
     snowflake.cortex.complete('llama2-70b-chat', 
                               'How many customers does Snowflake have?'
