@@ -1,3 +1,6 @@
+create or replace database sec_cortex_demo;
+use database sec_cortex_demo;
+
 create or replace function chunk_text(text varchar)
 returns table(chunk varchar, start_index int)
 language  python
