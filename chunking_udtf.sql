@@ -6,10 +6,10 @@ returns table(chunk varchar, start_index int)
 language  python
 runtime_version = '3.10'
 handler = 'text_chunker'
-packages=('pandas','langchain' )
+packages=('pandas','langchain-text-splitters' )
 as
 $$
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 import pandas as pd
 
 class text_chunker:
@@ -26,10 +26,10 @@ class text_chunker:
         )
     
         chunks = text_splitter.create_documents(text_raw)
-        df = pd.DataFrame(chunks, columns=['chunks','meta'])
+        df = pd.DataFrame([[d.page_content, d.metadata] for d in chunks], columns=['chunks','meta'])
 
-        df['meta'] = df['meta'].apply(lambda x: x[1]['start_index']).astype(int)
-        df['chunks'] = df['chunks'].apply(lambda x: x[1])
+        df['meta'] = df['meta'].apply(lambda x: x['start_index']).astype(int)
+        df['chunks'] = df['chunks'].apply(lambda x: x)
         
         yield from df.itertuples(index=False, name=None)
 $$;
